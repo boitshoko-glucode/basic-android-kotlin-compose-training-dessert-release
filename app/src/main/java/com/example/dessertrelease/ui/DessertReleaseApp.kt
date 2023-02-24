@@ -16,6 +16,8 @@
 
 package com.example.dessertrelease.ui
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -68,6 +70,7 @@ fun DessertReleaseApp(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun DessertReleaseApp(
     uiState: DessertReleaseUiState,
@@ -95,10 +98,14 @@ private fun DessertReleaseApp(
             )
         }
     ) { innerPadding ->
-        if (isLinearLayout) {
-            DessertReleaseLinearLayout(modifier.padding(innerPadding))
-        } else {
-            DessertReleaseGridLayout(modifier.padding(innerPadding))
+        AnimatedContent(
+            targetState = isLinearLayout
+        ) { targetState ->
+            if (targetState) {
+                DessertReleaseLinearLayout(modifier.padding(innerPadding))
+            } else {
+                DessertReleaseGridLayout(modifier.padding(innerPadding))
+            }
         }
     }
 }
